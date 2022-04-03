@@ -58,7 +58,7 @@ function CatalogRequest(e) {
 		UI.append(grid,divl);
 		CR.langs.map((lang)=>{
 			let div = createElement('div','uk-width-1-4@s');
-			let input = createElement('input','uk-input colparam colparam'+lang,{'type':'text','placeholder':lang,'id':'colparam'+cnt+lang});
+			let input = createElement('input','uk-input colparam colparam'+lang,{'type':'text','placeholder':lang,'data-lang':lang,'id':'colparam'+cnt+lang});
 			input.value = col === undefined || col[lang] === undefined ? '' : col[lang];
 			UI.append(div,input);
 			UI.append(grid,div);
@@ -75,7 +75,8 @@ function CatalogRequest(e) {
 		let names = {};
 		
 		UI.$$('.colparam,.names').map((elem)=>{
-			if(UI.$(elem).value.trim() == ""){
+			let val = UI.$(elem).value.trim();
+			if(val == ""){
 				UI.$(elem).classList.add("uk-form-danger");
 				check = false;
 			}
@@ -215,7 +216,7 @@ function CatalogRequest(e) {
 		
 		console.log(CR.catalog);
 		
-		UI.ajax('/updates/test', { responseType: 'json', method: 'POST', data: JSON.stringify(CR.catalog) })
+		UI.ajax('/catalog/json', { responseType: 'json', method: 'POST', data: JSON.stringify(CR.catalog) })
 		  .then(function(xhr) {
 			//...toServer
 		});
