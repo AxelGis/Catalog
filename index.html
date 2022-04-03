@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Catalog</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/uikit.min.css" />
+	<script src="js/uikit.min.js"></script>
+	<script src="js/uikit-icons.min.js"></script>
+	<script src="js/catalogrequest.js"></script>
+	<style>
+		td.edits{
+			min-width: 30px;
+		}
+	</style>
+</head>
+<body>
+<div class="uk-padding">
+	<h3>Справочник <a id="saveCatalog" href="#" class="uk-button uk-button-small"><span uk-icon="icon: cloud-upload"></span> Сохранить</a></h3>
+	<ul id="filter" class="uk-subnav uk-subnav-pill">
+		<li class="uk-active"><a data-lang="RU" href="#">RU</a></li>
+		<li><a data-lang="EN" href="#">EN</a></li>
+		<li><a data-lang="ES" href="#">ES</a></li>
+	</ul>
+	<div id="catalogbox">
+		<div id="catalogname" class="uk-margin">
+			<a href="#" uk-toggle="target: #modal" id="editCatalog" uk-icon="icon: pencil"></a> 
+			<span class="catname catnameRU filtered" data-lang="RU"></span>
+			<span class="catname catnameEN filtered" data-lang="EN"></span>
+			<span class="catname catnameES filtered" data-lang="ES"></span>
+		</div>
+		<div id="catalogedit"></div>
+		<div id="catalogtable"></div>
+	</div>
+	
+	<div id="modal" uk-modal class="uk-modal-container">
+		<div class="uk-modal-dialog uk-modal-body">
+			<h2 class="uk-modal-title">Редактирование справочника</h2>
+			<button id="save" class="uk-button uk-button-primary uk-margin" type="button">Сохранить</button>
+			<button class="uk-button uk-button-default uk-modal-close" type="button">Закрыть</button>
+			<div id="modalContent" class="uk-modal-content"></div>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+	var catalogRequest = new CatalogRequest('#catalogbox');
+	catalogRequest.loadCatalog();
+	
+	UIkit.util.on('#editCatalog', 'click', function () {
+		catalogRequest.edit();
+	});
+	UIkit.util.on('#save', 'click', function () {
+		catalogRequest.save();
+	});
+	UIkit.util.on('#saveCatalog', 'click', function () {
+		catalogRequest.json();
+	});
+	UIkit.util.on('#filter a', 'click', function () {
+		for(let elem of UIkit.util.$$('#filter li')){
+			UIkit.util.$(elem).classList.remove("uk-active");
+		}
+		UIkit.util.parent(this).classList.add("uk-active");
+		catalogRequest.setLang();
+	});
+</script>
+</html>
